@@ -19,4 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('FaceRecog/', include('FaceRecog.urls')),
+    path('ProdInfo/', include('ProdInfo.urls')),
+    path('Monitor/', include('Monitor.urls'))
 ]

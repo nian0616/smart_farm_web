@@ -1,97 +1,75 @@
 <template>
   <div class="dashboard-editor-container">
-  <!-- <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
-  </el-row> -->
-  <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="12">
-        <div class="chart-wrapper">
-          <bar-chart />
-          <!-- <line-chart :chart-data="lineChartData" />  -->
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="12">
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
-      </el-col>
-  </el-row>
-  <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="12">
-        <div class="chart-wrapper">
-          <bar-chart />
-          <!-- <line-chart :chart-data="lineChartData" />  -->
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="12">
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
-      </el-col>
-  </el-row>
-  <!-- <div class="chart-container">
-  <chart height="100%" width="100%" />
-  </div> -->
+    <panel-group @handleSetBarChartData="handleSetBarChartData" />
+
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <line-chart :chart-data="barChartData" />
+    </el-row>
   </div>
 </template>
 
 <script>
-import GithubCorner from '@/components/GithubCorner'
-// import PanelGroup from './components/PanelGroup'
+import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
-import RaddarChart from './components/RaddarChart'
-import PieChart from './components/PieChart'
-import BarChart from './components/BarChart'
-// import TransactionTable from './components/TransactionTable'
-// import TodoList from './components/TodoList'
-// import BoxCard from './components/BoxCard'
-import Chart from '@/components/Charts/MixChart'
-
-
-const lineChartData = {
-  newVisitis: {
-    expectedData: [10, 12, 16, 13, 10, 16, 16,12],
-    actualData: [90, 40, 10, 40, 20, 80, 55, 12]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
+import axios from 'axios'
 
 export default {
   name: 'DashboardAdmin',
   components: {
-    // GithubCorner,
-    // PanelGroup,
+    PanelGroup,
     LineChart,
-    RaddarChart,
-    PieChart,
-    BarChart,
-    Chart
-    // TransactionTable,
-    // TodoList,
-    // BoxCard
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      barChartData: {
+        name: [],
+        expectedData: [],
+        dim: '',
+        color: ''
+      }
     }
   },
+
   methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
+    give_data(type, data) {
+          this.barChartData.name = data.name;
+          switch(type){
+          case 'price':
+            this.barChartData.expectedData = data.price;
+            this.barChartData.dim = '农作物价格';
+            this.barChartData.color = 'pink';
+            break;
+          case 'change_num':
+            this.barChartData.expectedData = data.change_num;
+            this.barChartData.dim = '涨跌数值';
+            this.barChartData.color = 'blue';
+            break;
+          case 'change_ratio':
+            this.barChartData.expectedData = data.change_ratio;
+            this.barChartData.dim = '涨跌幅度';
+            this.barChartData.color = 'green';
+            break;
+          case 'trading_volumes':
+            this.barChartData.expectedData = data.trading_volumes;
+            this.barChartData.dim = '成交量';
+            this.barChartData.color = 'red';
+            break;
+          }
+      },
+    handleSetBarChartData(type){
+      axios({
+         method: 'get',
+         url: 'http://127.0.0.1:8000/ProdInfo/get_data/',
+         responseType: 'json'
+       })
+      .then((response)=>(
+        console.log(response.data),
+        this.give_data(type, response.data)
+      ))
     }
-  }
+  },
 }
+
 </script>
 
 <style lang="scss" scoped>
@@ -112,12 +90,6 @@ export default {
     padding: 16px 16px 0;
     margin-bottom: 32px;
   }
-
-  .chart-container{
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 84px);
-}
 }
 
 @media (max-width:1024px) {

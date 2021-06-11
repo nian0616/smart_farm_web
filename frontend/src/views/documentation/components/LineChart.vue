@@ -16,7 +16,7 @@ export default {
     },
     width: {
       type: String,
-      default: '100%'
+      default: '70%'
     },
     height: {
       type: String,
@@ -61,10 +61,10 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({name, expectedData, dim, color} = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['美玉米指', '美玉米03', '美玉米05', '美玉米07', '美玉米09', '美玉米12', '美小麦指', '美小麦03'],
+          data: name,
           boundaryGap: true,
           axisTick: {
             show: false
@@ -85,51 +85,29 @@ export default {
           padding: [5, 10]
         },
         yAxis: {
+          name: dim,
           axisTick: {
             show: false
           }
         },
         legend: {
-          data: ['涨跌', '涨跌幅度']
+          data: ['实时数据']
         },
         series: [{
-          name: '涨跌', itemStyle: {
+          name: '实时数据', itemStyle: {
             normal: {
-              color: '#FF005A',
+              color: color,
               lineStyle: {
-                color: '#FF005A',
+                color: color,
                 width: 2
               }
             }
           },
           smooth: true,
           type: 'bar',
-          barMaxWidth: 35,
-          barGap: '10%',
-          stack: 'total',
           data: expectedData,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
-        },
-        {
-          name: '涨跌幅度',
-          smooth: true,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: '#3888fa',
-              lineStyle: {
-                color: '#3888fa',
-                width: 2
-              },
-              areaStyle: {
-                color: '#f3f8ff'
-              }
-            }
-          },
-          data: actualData,
-          animationDuration: 2800,
-          animationEasing: 'quadraticOut'
         }]
       })
     }

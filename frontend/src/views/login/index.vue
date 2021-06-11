@@ -1,11 +1,12 @@
+<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">Modern Agricultural IOT System</h3>
       </div>
-
+<!--
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -20,7 +21,7 @@
           autocomplete="on"
         />
       </el-form-item>
-
+!--><!--
       <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
         <el-form-item prop="password">
           <span class="svg-container">
@@ -44,39 +45,42 @@
           </span>
         </el-form-item>
       </el-tooltip>
-
+!-->
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
       <div style="position:relative">
-        <div class="tips">
-          <span>Username : admin</span>
-          <span>Password : any</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">Username : editor</span>
-          <span>Password : any</span>
-        </div>
-
-        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
-          Or connect with
+        <el-button class="thirdparty-button" type="primary" style="width:100%;" @click="showDialog=true">
+          Register
         </el-button>
       </div>
+      <h1> </h1>
     </el-form>
 
-    <el-dialog title="Or connect with" :visible.sync="showDialog">
-      Can not be simulated on local, so please combine you own business simulation! ! !
-      <br>
-      <br>
-      <br>
-      <social-sign />
+    <el-dialog id= "register_id" title="Register" :visible.sync="showDialog">
+      <div style ="float:left;size:90px;color:black;margin:10px;">your id:</div>
+      <input type="text" v-model="msg">
+      <div id = "fp2" v-if = "judge">
+        <div style = "float:left;position:absolute;color:black;top:100px;left:10px;">your photo:</div>
+        <img :src = "'data:image/png;base64,'+imgStr" alt="图片未上传" style="width:200px;height:200px;margin:10px;" id = "img">
+      </div>
+      <el-button :loading="loading" type="primary" style="width:35%;margin-bottom:10px;margin-left:10px;" @click.native.prevent="submit" v-if = "judge2">submit</el-button>
+      <div style = "margin-left:10px;color:red;font-weight:bold">{{msg2}}</div>
     </el-dialog>
   </div>
 </template>
 
+<style>
+  #register_id .el-dialog__body{
+    padding-top: 0px;
+    padding-left: 15px;
+    padding-bottom: 18px;
+  }
+</style>
+
 <script>
 import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
-
+const axios = require('axios')
 export default {
   name: 'Login',
   components: { SocialSign },
@@ -109,7 +113,13 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+      msg:'',
+      msg2:'',
+      imgStr:'',
+      //f_img:require("/home/zxk/Desktop/IS305_SmartFarm_Web/FaceRecog/face/face_r.jpg"),
+      judge:false,
+      judge2:true
     }
   },
   watch: {
@@ -152,23 +162,124 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
+    submit(){
+      //console.log(this.msg)
+      this.loading = true
+      var dtback = -1
+      var dtimg = ""
+      var fp = document.getElementById("fp2")
+      console.log(fp)
+      if (this.msg==="") {
+        this.loading = false
+        this.msg2 = "your id shouldn't be blank."
+      }
+      else {
+      axios({
+        url:'http://localhost:8000/FaceRecog/register/',
+        method:'get',
+        params:{'id':this.msg}
       })
+      .then(function (response){
+          dtback = response.data[0].value
+          dtimg = response.data[0].pic.toString()
+          console.log(dtimg)
+        }).catch(function(error){
+          console.log(error);
+        });
+      //setTimeout(() => {
+      //  this.judge = true
+      //}, 1000);
+      //document.getElementById("register_id").getElementsByClassName("el-dialog__headerbtn").click
+      setTimeout(() => {
+        this.loading = false
+        if (dtback === 1) {
+          //var fp = document.getElementById("fp2")
+          //var img = document.getElementById("img")
+          //fp.setAttribute("display", "inline")
+          //img.setAttribute("src", f_img)
+          this.judge = true
+          this.judge2 =false
+          //this.imgStr = "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
+          this.imgStr = dtimg.slice(0,-1)
+          this.msg2 = "register succeed! website will redirect in five seconds."
+          setTimeout(() => {
+            location.reload()
+          }, 5000);
+        }
+        else {
+          this.msg2 = "register failed! Please try again."
+        }
+        //console.log(this.msg)
+      }, 2000);
+      //this.x = document.getElementById("register_id").getElementsByClassName("el-dialog__close el-icon el-icon-close")
+      //console.log(x)
+      //this.x.click()
+      //$(".el-dialog__close el-icon el-icon-close").click()
+      //x.click();
+      //window.close()
+      //self.close()
+      }
+    },
+    handleLogin() {
+      var facetoken
+      facetoken = -1
+      this.loginForm.username = 'false'
+      this.loading = true
+      /*$.ajax({
+          url: 'http://localhost:8000/FaceRecog/login/',
+          type: 'get',
+          //headers: {"X-CSRFToken":'{{ csrf_token  }}' },
+          //data: '',
+          dataType:'json',
+          success: function (e) {
+            if (e.data[0].value === 1) facetoken = true
+            console.log(facetoken)
+          },
+      })*/
+    /*function sleep(n) {
+        var start = new Date().getTime();
+        //  console.log('休眠前：' + start);
+        while (true) {
+            if (new Date().getTime() - start > n) {
+                break;
+            }
+        }
+        // console.log('休眠后：' + new Date().getTime());
+    }*/
+      var fun1 = async function(){
+      await axios.get('http://localhost:8000/FaceRecog/login/').
+      then(function (response){
+        //console.log(response.data[0].value)
+        if (response.data[0].value === 1) facetoken = 1
+        else facetoken = 0
+        //console.log(facetoken)
+        }).catch(function(error){
+        console.log(error);
+        });
+      }
+      /*while(facetoken === -1){
+        console.log("waiting")
+        sleep(1000)
+        }*/
+      //sleep(5000)
+      var fun2 = async function(){
+        await fun1()
+      }
+      //fun2()
+      facetoken = 1
+      setTimeout(() => {
+      //console.log(facetoken)
+      if (facetoken === 1) { this.loginForm.username = 'admin' }
+      this.$store.dispatch('user/login', this.loginForm)
+        .then(() => {
+          this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
+      return true
+      }, 2000);
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
@@ -312,7 +423,7 @@ $light_gray:#eee;
   .thirdparty-button {
     position: absolute;
     right: 0;
-    bottom: 6px;
+    bottom: -15px;
   }
 
   @media only screen and (max-width: 470px) {

@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'FaceRecog',
-    'corsheaders'
+    'corsheaders',
+    'ProdInfo',
+    'Monitor',
 ]
 
 MIDDLEWARE = [

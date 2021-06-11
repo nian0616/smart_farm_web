@@ -1,23 +1,12 @@
 <template>
-  <div class="chart-container">
-    <chart height="100%" width="100%" />
-  </div>
+  <iframe src="/DynamicForm.html" width="100%" height="650px" frameborder="0" scrolling="auto"></iframe>
 </template>
 
 <script>
-import Chart from '@/components/Charts/MixChart'
 
-export default {
-  name: 'MixChart',
-  components: { Chart }
-}
 </script>
 
 <style scoped>
-.chart-container{
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 84px);
-}
+
 </style>
 

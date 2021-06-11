@@ -73,16 +73,52 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/monitor',
     children: [
       {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: '主控面板',
-        meta: { title: '主控面板', icon: 'dashboard', affix: true }
+        path: 'monitor',
+        component: () => import('@/views/monitor/index'),
+        name: '大棚监控',
+        meta: { title: '大棚监控', icon: 'eye', affix: true }
       }
     ]
   },
+  {
+    path: '/greenhouse',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/greenhouse/index'),
+        name: '大棚环境',
+        meta: { title: '大棚环境', icon: 'star', affix: true }
+      }
+    ]
+  },
+  // {
+  //   path: '/greenhouse_',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/greenhouse1/index'),
+  //       name: '大棚环境',
+  //       meta: { title: '大棚环境', icon: 'star', affix: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/greenhouse',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/greenhouse/index'),
+  //       name: '大棚监控',
+  //       meta: { title: '大棚监控', icon: 'table', affix: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/documentation',
     component: Layout,
@@ -92,6 +128,18 @@ export const constantRoutes = [
         component: () => import('@/views/documentation/index'),
         name: '行业动态',
         meta: { title: '行业动态', icon: 'international', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/vehicle',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/vehicle/index'),
+        name: '无人车工作',
+        meta: { title: '无人车工作', icon: 'component', affix: true }
       }
     ]
   },
@@ -108,29 +156,18 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/greenhouse',
+    path: '/crop',
     component: Layout,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/greenhouse/index'),
-        name: '大棚监控',
-        meta: { title: '大棚监控', icon: 'table', affix: true }
+        component: () => import('@/views/crop/index'),
+        name: '作物情况',
+        meta: { title: '作物情况', icon: 'table', affix: true }
       }
     ]
   },
-  {
-    path: '/vehicle',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/vehicle/index'),
-        name: '无人车工作',
-        meta: { title: '无人车工作', icon: 'component', affix: true }
-      }
-    ]
-  },
+  
   // { path: '*', redirect: '/404', hidden: true }
   // {
   //   path: '/guide',
