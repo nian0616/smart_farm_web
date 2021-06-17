@@ -19,3 +19,10 @@ npm run dev
 # 后端
 python manage.py runserver
 ```
+
+## 绕过人脸识别登录
+在 **/frontend/src/views/login/index.vue#Line268** 注释掉 fun2 并添加 facetoken = 1:
+```python
+// fun2
+facetoken = 1
+```
