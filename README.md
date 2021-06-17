@@ -1,6 +1,6 @@
-# IS305_SmartFarm_Web
+# Web for our project of IS305
 ## Introduction
-Websystem of our project for IS305: Application Software Course Design (SJTU，2021 Spring).
+Web of our project for IS305: Application Software Course Design (SJTU，2021 Spring).
 
 ## Getting started
 ```shell
