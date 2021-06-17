@@ -4,8 +4,8 @@ import bs4
 
 URL = 'http://quote.stockstar.com/futures/agroproductsinternation.shtml'
 
-HEADER = {
-'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+User-AgentHEADER = {
+'':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
 }
 
 def getHTMLText(url):
@@ -44,7 +44,7 @@ def fill_products_List(products_list, html):
             products_list.append(one_prod_list)
     
     # 再把表的数据添进来
-    for tr in soup.find('tbody').children: # 一个 tr 对应一个大学
+    for tr in soup.find('tbody').children: # 一个 tr 对应一个农产品
         if isinstance(tr, bs4.element.Tag): # 通过对 tag 类型的判断，过滤掉 tbody 的 children 中非标签的类型
             tds = tr('td')
             one_prod_list = []
@@ -68,7 +68,7 @@ def print_products_list(products_list):
         print("{0:^10}\t{1:^10}\t{2:^10}".format(prod[0],prod[1],prod[2]))
 
 def main():
-    products_list = [] # 需要得到的目标：大学信息列表
+    products_list = [] # 需要得到的目标：农产品信息列表
     html = getHTMLText(URL)
     fill_products_List(products_list, html)
     #print_products_list(products_list)
