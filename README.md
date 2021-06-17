@@ -1,22 +1,19 @@
 # IS305_SmartFarm_Web
 ## Introduction
-Code for IS305: Application Software Course Design (SJTU，2021 Spring).
-A smart farm platform combining **Web** and **Embedded System**.
+Websystem of our project for IS305: Application Software Course Design (SJTU，2021 Spring).
 
 ## Getting started
 ```shell
-# 前端
-# first download and install node.js
-# enter the project directory
-cd fronted
+# 如 PC 上没有 node.js 需先安装
 
-# install dependency
+# 第一次启动前端需要安装 node.js 依赖包
+cd fronted
 npm install
 
-# develop
+# 启动前端
 npm run dev
 
-# 后端
+# 启动后端
 python manage.py runserver
 ```
 
