@@ -32,41 +32,41 @@ export default {
 
   methods: {
     give_data(type, data) {
-          this.barChartData.name = data.name;
-          switch(type){
-          case 'price':
-            this.barChartData.expectedData = data.price;
-            this.barChartData.dim = '农作物价格';
-            this.barChartData.color = 'pink';
-            break;
-          case 'change_num':
-            this.barChartData.expectedData = data.change_num;
-            this.barChartData.dim = '涨跌数值';
-            this.barChartData.color = 'blue';
-            break;
-          case 'change_ratio':
-            this.barChartData.expectedData = data.change_ratio;
-            this.barChartData.dim = '涨跌幅度';
-            this.barChartData.color = 'green';
-            break;
-          case 'trading_volumes':
-            this.barChartData.expectedData = data.trading_volumes;
-            this.barChartData.dim = '成交量';
-            this.barChartData.color = 'red';
-            break;
-          }
-      },
+      this.barChartData.name = data.name;
+      switch(type){
+      case 'price':
+        this.barChartData.expectedData = data.price;
+        this.barChartData.dim = '农作物价格/元';
+        this.barChartData.color = 'pink';
+        break;
+      case 'change_num':
+        this.barChartData.expectedData = data.change_num;
+        this.barChartData.dim = '涨跌数值/%';
+        this.barChartData.color = 'blue';
+        break;
+      case 'change_ratio':
+        this.barChartData.expectedData = data.change_ratio;
+        this.barChartData.dim = '涨跌幅度/%';
+        this.barChartData.color = 'green';
+        break;
+      case 'trading_volumes':
+        this.barChartData.expectedData = data.trading_volumes;
+        this.barChartData.dim = '成交量';
+        this.barChartData.color = 'red';
+        break;
+      }
+    }, //give_data
     handleSetBarChartData(type){
+      // handleSetBarChartData：向后端数据库请求数据
       axios({
-         method: 'get',
-         url: 'http://127.0.0.1:8000/ProdInfo/get_data/',
-         responseType: 'json'
-       })
+        method: 'get',
+        url: 'http://127.0.0.1:8000/ProdInfo/get_data/',
+        responseType: 'json'
+      })
       .then((response)=>(
-        console.log(response.data),
         this.give_data(type, response.data)
       ))
-    }
+    } // handleSetBarChartData
   },
 }
 
@@ -77,13 +77,6 @@ export default {
   padding: 32px;
   background-color: rgb(240, 242, 245);
   position: relative;
-
-  .github-corner {
-    position: absolute;
-    top: 0px;
-    border: 0;
-    right: 0;
-  }
 
   .chart-wrapper {
     background: #fff;

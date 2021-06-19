@@ -1,9 +1,10 @@
 from django.db import models
+from django.utils import timezone
 
 class Monitor_video(models.Model):
-    name = models.CharField(max_length = 10)
-    path = models.CharField(max_length = 100)
-    time = models.DateTimeField("time published")
+    name = models.CharField(max_length = 10, default = '')
+    path = models.CharField(max_length = 100, default = '')
+    time = models.DateTimeField(default = timezone.now)
 
 class Environment_monitor(models.Model):
     temp = models.FloatField(default = 0)
@@ -12,9 +13,7 @@ class Environment_monitor(models.Model):
     humidity = models.FloatField(default = 0)
     soil_humidity = models.FloatField(default = 0)
     precipitation = models.FloatField(default = 0)
-    time = models.DateTimeField("time published")
-
-class Crop_maturity(models.Model):
-    crop_name = models.CharField(max_length = 10)
-    maturity = models.FloatField(default = 0)
-    time = models.DateTimeField("time published")
+    year = models.IntegerField(default = 0)
+    month = models.IntegerField(default = 0)
+    day = models.IntegerField(default = 0)
+    hour = models.IntegerField(default = 0)

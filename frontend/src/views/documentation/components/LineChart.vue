@@ -16,7 +16,7 @@ export default {
     },
     width: {
       type: String,
-      default: '70%'
+      default: '100%'
     },
     height: {
       type: String,
@@ -107,7 +107,9 @@ export default {
           type: 'bar',
           data: expectedData,
           animationDuration: 2800,
-          animationEasing: 'cubicInOut'
+          animationEasing: 'cubicInOut',
+          barGap:'80%',/*多个并排柱子设置柱子之间的间距*/
+          barCategoryGap:'50%',/*多个并排柱子设置柱子之间的间距*/
         }]
       })
     }

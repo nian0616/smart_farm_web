@@ -61,15 +61,10 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
-    setOptions({ expectedData, dim} = {}) {
+    setOptions({hour, expectedData, dim, color} = {}) {
       this.chart.setOption({
         xAxis: {
-          // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          data: ['0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00',
-                '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00',
-                '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00',
-                '21:00', '22:00', '23:00'
-                ],
+          data: hour,
           boundaryGap: true,
           axisTick: {
             show: false
@@ -95,57 +90,17 @@ export default {
             show: false
           }
         },
-        // legend: {
-        //   data: ['expected', 'actual']
-        // },
-        // series: [{
-        //   name: 'expected', itemStyle: {
-        //     normal: {
-        //       color: '#FF005A',
-        //       lineStyle: {
-        //         color: '#FF005A',
-        //         width: 2
-        //       }
-        //     }
-        //   },
-        //   smooth: true,
-        //   type: 'line',
-        //   data: expectedData,
-        //   animationDuration: 2800,
-        //   animationEasing: 'cubicInOut'
-        // },
-        // {
-        //   name: 'actual',
-        //   smooth: true,
-        //   type: 'line',
-        //   itemStyle: {
-        //     normal: {
-        //       color: '#3888fa',
-        //       lineStyle: {
-        //         color: '#3888fa',
-        //         width: 2
-        //       },
-        //       areaStyle: {
-        //         color: '#f3f8ff'
-        //       }
-        //     }
-        //   },
-        //   data: actualData,
-        //   animationDuration: 2800,
-        //   animationEasing: 'quadraticOut'
-        // }]
+        legend: {
+           data: ['每小时数据']
+        },
         series: [{
-          name: 'expected', itemStyle: {
+          name: '每小时数据', itemStyle: {
             normal: {
-              color: '#FF005A',
-              lineStyle: {
-                color: '#FF005A',
-                width: 2
-              }
+              color: color,
             }
           },
           smooth: true,
-          type: 'line',
+          type: 'bar',
           data: expectedData,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'

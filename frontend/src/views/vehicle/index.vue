@@ -24,6 +24,8 @@
 </template>
  
 <script>
+    import axios from 'axios'
+
     export default {
         name: "vehicle",
         data: () => ({
@@ -34,23 +36,24 @@
                 dragging: true
             },
             content:"",
-            markers:[
-                {
-                lng: '121.448615',
-                lat: '31.037968',
-                value: '无人车1，运行状态良好'
-                },
-                {
-                lng: '121.448015',
-                lat: '31.037068',
-                value: '无人车2，运行状态良好'
-                },
-                ]
+            markers:[], // 无人车运行状态，包括经纬度位置和运行是否正常
         }),
           created () {
             this.markerAddAttr();
+            this.get_position(); //加载界面时，读取无人车运行状态
         },
         methods: {
+            get_position(){
+                axios({
+                    method: 'get',
+                    url: 'http://127.0.0.1:8000/ProdInfo/get_position/',
+                    responseType: 'json'
+                })
+                .then((response)=>(
+                    console.log(response.data),
+                    this.markers = response.data
+                ))
+            },
             handler ({BMap, map}) {
                 let me = this;
                 console.log(BMap, map)

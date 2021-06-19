@@ -52,10 +52,6 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false
 
-// Vue.use(ElementUI);
-// Vue.prototype.$axios = axios
-// Vue.prototype.$url = 'http://localhost:8000/'
-
 new Vue({
   el: '#app',
   router,

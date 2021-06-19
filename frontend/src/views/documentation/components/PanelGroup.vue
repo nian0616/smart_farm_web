@@ -8,7 +8,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            产品价格
+            产 品 价 格
           </div>
           <div class="card-panel-num">
           </div>
@@ -23,7 +23,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            涨跌数值
+            涨 跌 数 值
           </div>
           <div class="card-panel-num">
           </div>
@@ -38,7 +38,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            涨跌幅度
+            涨 跌 幅 度
           </div>
           <div class="card-panel-num">
           </div>
@@ -53,7 +53,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            成交量
+            成 交 量
           </div>
           <div class="card-panel-num">
           </div>
@@ -155,11 +155,13 @@ export default {
       font-weight: bold;
       margin: 26px;
       margin-left: 0px;
+      // margin: 40px 0 0 40px;
 
       .card-panel-text {
+        float: left;
         line-height: 18px;
         color: rgba(0, 0, 0, 0.45);
-        font-size: 16px;
+        font-size: 18px;
         margin-bottom: 12px;
       }
 

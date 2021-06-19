@@ -6,46 +6,6 @@
       <div class="title-container">
         <h3 class="title">Modern Agricultural IOT System</h3>
       </div>
-<!--
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          autocomplete="on"
-        />
-      </el-form-item>
-!--><!--
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-        <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password" />
-          </span>
-          <el-input
-            :key="passwordType"
-            ref="password"
-            v-model="loginForm.password"
-            :type="passwordType"
-            placeholder="Password"
-            name="password"
-            tabindex="2"
-            autocomplete="on"
-            @keyup.native="checkCapslock"
-            @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
-          />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-          </span>
-        </el-form-item>
-      </el-tooltip>
-!-->
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
       <div style="position:relative">
@@ -117,7 +77,6 @@ export default {
       msg:'',
       msg2:'',
       imgStr:'',
-      //f_img:require("/home/zxk/Desktop/IS305_SmartFarm_Web/FaceRecog/face/face_r.jpg"),
       judge:false,
       judge2:true
     }
@@ -134,18 +93,12 @@ export default {
       immediate: true
     }
   },
-  created() {
-    // window.addEventListener('storage', this.afterQRScan)
-  },
   mounted() {
     if (this.loginForm.username === '') {
       this.$refs.username.focus()
     } else if (this.loginForm.password === '') {
       this.$refs.password.focus()
     }
-  },
-  destroyed() {
-    // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
     checkCapslock(e) {
@@ -163,7 +116,6 @@ export default {
       })
     },
     submit(){
-      //console.log(this.msg)
       this.loading = true
       var dtback = -1
       var dtimg = ""
@@ -186,20 +138,11 @@ export default {
         }).catch(function(error){
           console.log(error);
         });
-      //setTimeout(() => {
-      //  this.judge = true
-      //}, 1000);
-      //document.getElementById("register_id").getElementsByClassName("el-dialog__headerbtn").click
       setTimeout(() => {
         this.loading = false
         if (dtback === 1) {
-          //var fp = document.getElementById("fp2")
-          //var img = document.getElementById("img")
-          //fp.setAttribute("display", "inline")
-          //img.setAttribute("src", f_img)
           this.judge = true
           this.judge2 =false
-          //this.imgStr = "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
           this.imgStr = dtimg.slice(0,-1)
           this.msg2 = "register succeed! website will redirect in five seconds."
           setTimeout(() => {
@@ -209,15 +152,7 @@ export default {
         else {
           this.msg2 = "register failed! Please try again."
         }
-        //console.log(this.msg)
       }, 2000);
-      //this.x = document.getElementById("register_id").getElementsByClassName("el-dialog__close el-icon el-icon-close")
-      //console.log(x)
-      //this.x.click()
-      //$(".el-dialog__close el-icon el-icon-close").click()
-      //x.click();
-      //window.close()
-      //self.close()
       }
     },
     handleLogin() {
@@ -225,27 +160,6 @@ export default {
       facetoken = -1
       this.loginForm.username = 'false'
       this.loading = true
-      /*$.ajax({
-          url: 'http://localhost:8000/FaceRecog/login/',
-          type: 'get',
-          //headers: {"X-CSRFToken":'{{ csrf_token  }}' },
-          //data: '',
-          dataType:'json',
-          success: function (e) {
-            if (e.data[0].value === 1) facetoken = true
-            console.log(facetoken)
-          },
-      })*/
-    /*function sleep(n) {
-        var start = new Date().getTime();
-        //  console.log('休眠前：' + start);
-        while (true) {
-            if (new Date().getTime() - start > n) {
-                break;
-            }
-        }
-        // console.log('休眠后：' + new Date().getTime());
-    }*/
       var fun1 = async function(){
       await axios.get('http://localhost:8000/FaceRecog/login/').
       then(function (response){
@@ -257,18 +171,12 @@ export default {
         console.log(error);
         });
       }
-      /*while(facetoken === -1){
-        console.log("waiting")
-        sleep(1000)
-        }*/
-      //sleep(5000)
       var fun2 = async function(){
         await fun1()
       }
-      //fun2()
+      // fun2()
       facetoken = 1
       setTimeout(() => {
-      //console.log(facetoken)
       if (facetoken === 1) { this.loginForm.username = 'admin' }
       this.$store.dispatch('user/login', this.loginForm)
         .then(() => {
@@ -289,24 +197,6 @@ export default {
         return acc
       }, {})
     }
-    // afterQRScan() {
-    //   if (e.key === 'x-admin-oauth-code') {
-    //     const code = getQueryObject(e.newValue)
-    //     const codeMap = {
-    //       wechat: 'code',
-    //       tencent: 'code'
-    //     }
-    //     const type = codeMap[this.auth_type]
-    //     const codeName = code[type]
-    //     if (codeName) {
-    //       this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-    //         this.$router.push({ path: this.redirect || '/' })
-    //       })
-    //     } else {
-    //       alert('第三方登录失败')
-    //     }
-    //   }
-    // }
   }
 }
 </script>

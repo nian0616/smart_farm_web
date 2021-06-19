@@ -1,74 +1,84 @@
 <template>
   <div class="dashboard-editor-container">
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <panel-group @handleSetBarChartData="handleSetBarChartData" />
     
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
+      <line-chart :chart-data="barChartData" />
     </el-row>
 
   </div>
 </template>
 
 <script>
-import GithubCorner from '@/components/GithubCorner'
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
-import RaddarChart from './components/RaddarChart'
-import PieChart from './components/PieChart'
-import BarChart from './components/BarChart'
-import TransactionTable from './components/TransactionTable'
-import TodoList from './components/TodoList'
-import BoxCard from './components/BoxCard'
-
-const lineChartData = {
-  temp: {
-    expectedData: [20.2, 22.1, 23.4, 24.5, 24.9, 25.3, 25.8],
-    dim: '℃',
-  },
-  light: {
-    expectedData: [50.2, 48.2, 49.3, 50.3, 48.2, 50.1, 52.8],
-    dim: '%',
-  },
-  gas: {
-    expectedData: [20.11, 18.23, 19.87, 19.99, 20.01, 18.93, 18.24],
-    dim: '%',
-  },
-  humidity: {
-    expectedData: [72, 64, 70, 65, 67, 72, 70],
-    dim:'%',
-  },
-  humidity_soil: {
-    expectedData: [0.44, 0.45, 0.42, 0.47, 0.44, 0.45, 0.46],
-    dim:'%',
-  },
-  rain: {
-    expectedData: [0.30, 0.33, 0.28, 0.28, 0.33, 0.33, 0.34],
-    dim:'%',
-  }
-}
+import axios from 'axios'
 
 export default {
   name: 'DashboardAdmin',
   components: {
-    GithubCorner,
     PanelGroup,
-    LineChart,
-    RaddarChart,
-    PieChart,
-    BarChart,
-    TransactionTable,
-    TodoList,
-    BoxCard
+    LineChart
   },
   data() {
     return {
-      lineChartData: lineChartData.temp
+      barChartData: {
+        hour: 1,
+        expectedData: [],
+        dim: '',
+        color: '',
+      }
     }
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
-    }
+    give_data(type, data) {
+      var monthstr = (data.month[0]).toString();
+      var datestr = monthstr.concat('月',(data.day[0]).toString());
+      this.barChartData.hour = data.hour;
+      switch(type){
+      case 'temp':
+        this.barChartData.expectedData = data.temp;
+        this.barChartData.dim = datestr.concat('温度');
+        this.barChartData.color = 'pink';
+        break;
+      case 'light_intensity':
+        this.barChartData.expectedData = data.light_intensity;
+        this.barChartData.dim = datestr.concat('光强');
+        this.barChartData.color = 'blue';
+        break;
+      case 'CO_concentration':
+        this.barChartData.expectedData = data.CO_concentration;
+        this.barChartData.dim = datestr.concat('CO浓度');
+        this.barChartData.color = 'green';
+        break;
+      case 'humidity':
+        this.barChartData.expectedData = data.humidity;
+        this.barChartData.dim = datestr.concat('湿度');
+        this.barChartData.color = 'red';
+        break;
+      case 'soil_humidity':
+        this.barChartData.expectedData = data.soil_humidity;
+        this.barChartData.dim = datestr.concat('水分');
+        this.barChartData.color = 'purple';
+        break;
+      case 'precipitation':
+        this.barChartData.expectedData = data.precipitation;
+        this.barChartData.dim = datestr.concat('降水量');
+        this.barChartData.color = 'orange';
+        break;
+      }
+    },// give_data
+    handleSetBarChartData(type){
+      axios({
+        method: 'get',
+        url: 'http://127.0.0.1:8000/Monitor/get_envir_info/',
+        responseType: 'json'
+      })
+      .then((response)=>(
+        console.log(response.data),
+        this.give_data(type, response.data)
+      ))
+    } // handleSetBarChartData
   }
 }
 </script>
@@ -78,13 +88,6 @@ export default {
   padding: 32px;
   background-color: rgb(240, 242, 245);
   position: relative;
-
-  .github-corner {
-    position: absolute;
-    top: 0px;
-    border: 0;
-    right: 0;
-  }
 
   .chart-wrapper {
     background: #fff;
